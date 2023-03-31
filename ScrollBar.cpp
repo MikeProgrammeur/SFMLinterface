@@ -79,11 +79,16 @@ class ScrollBar{
 
     void render(bool clicked,sf::RenderWindow &window){
         //if the button is and was clicked earlier we change progress to the corresponding value
-        //color
-        bool detected = detect(window);
-        chooseColor(detected);
+
         //detection
-        bool isSelected=clicked && detected;
+        bool detected = detect(window);
+        bool isSelected;
+        if(wasSelected){
+            isSelected=clicked;
+        }
+        else{
+            isSelected=clicked && detected;
+        }
         float mouseX = sf::Mouse::getPosition(window).x;
         float delta = mouseX-oldMouseX;
         //true if the bar is "held"
@@ -96,6 +101,8 @@ class ScrollBar{
         //memorizing old configuration
         oldMouseX=mouseX;
         wasSelected=isSelected;//isheld
+        //choosing color and drawing
+        chooseColor(isSelected||detected);
         drawTo(window);
     };
 
